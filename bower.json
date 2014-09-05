@@ -1,0 +1,33 @@
+{
+    "name": "bol.social-share",
+    "version": "1.0",
+    "authors": [
+        "Pepijn Olivier <pepijn@bitsoflove.be>"
+    ],
+    "description": "Social share lib that allows to share items on your website on facebook, twitter, linkedin and google plus",
+    "main": "bol.socialshare.js",
+    "moduleType": [
+        "amd"
+    ],
+    "keywords": [
+        "facebook",
+        "twitter",
+        "social",
+        "share",
+        "linkedin",
+        "google",
+        "plus"
+    ],
+    "license": "MIT",
+    "homepage": "http://bitsoflove.be",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "jquery": ">1.7"
+    }
+}
