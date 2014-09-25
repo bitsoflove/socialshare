@@ -91,8 +91,32 @@ bol.socialShare = (function(options) {
 
 
 
-    function postToTwitter(text, hashtag) {
+    /**
+     * options
+     *     description
+     *     hashtag
+     *     url
+     */
+    function postToTwitter(options) {
 
+        var twitterUrl = 'http://twitter.com/share?text=' + encodeURIComponent(options.description) + '&url=' + encodeURIComponent(options.url) + '&hashtags=' + options.hashtag;
+
+        popupCenter(twitterUrl, 'Twitter', 600, 300);
+    }
+
+    function popupCenter(url, title, w, h) {
+        // Fixes dual-screen position                       Most browsers      Firefox
+        var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left;
+        var dualScreenTop = window.screenTop !== undefined ? window.screenTop : screen.top;
+
+        var left = ((screen.width / 2) - (w / 2)) + dualScreenLeft;
+        var top = ((screen.height / 2) - (h / 2)) + dualScreenTop;
+        var newWindow = window.open(url, title, 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+        // Puts focus on the newWindow
+        if (window.focus) {
+            newWindow.focus();
+        }
     }
 
     /**
