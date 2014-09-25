@@ -47,7 +47,15 @@ bol.main = (function() {
 
     function shareTwitter(event) {
         event.preventDefault();
-        share.twitter();
+
+        var $container = $(this).closest('div');
+
+        var shareObject = {
+            description: $container.find('h2').text().trim(),
+            hashtag: '#bitsoflove',
+            url: 'http://bitsoflove.be'
+        };
+        share.twitter(shareObject);
     }
 
     function shareLinkedin(event) {
