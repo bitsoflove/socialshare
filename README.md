@@ -10,12 +10,15 @@ BoL Social Share is yet another social share javascript library. It can share to
 ###Usage
 
 1. Set OG meta tags for facebook
-2. create options object
-3.      > var share = new bol.socialShare(options);
-4.      > share.twitter(text);
-        > share.facebook(a,b,c)
-        > share.linkedin()
-        > share.googleplus()
+
+2. Create options object
+
+3.      `var share = new bol.socialShare(options);`
+
+4. `share.twitter(text);`
+`share.facebook(a,b,c)`
+`share.linkedin()`
+`share.googleplus()`
 
 ###Options
 ```javascript
@@ -29,6 +32,6 @@ BoL Social Share is yet another social share javascript library. It can share to
 
 ###Facebook
 
-    Read the guidelines for up-to-date information!
+Read the guidelines for up-to-date information!
 
-    og:image should be at least 1200x630 px
+og:image should be at least 1200x630 px
