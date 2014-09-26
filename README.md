@@ -18,7 +18,7 @@ BoL Social Share is yet another social share javascript library. It can share to
         > share.googleplus()
 
 ###Options
-```json
+```javascript
 {
     facebook: {
         appId: '__YOUR_APP_ID',
