@@ -13,7 +13,7 @@ BoL Social Share is yet another social share javascript library. It can share to
 
 2. Create options object
 
-3.      `var share = new bol.socialShare(options);`
+3. `var share = new bol.socialShare(options);`
 
 4. `share.twitter(text);`
 `share.facebook(a,b,c)`
