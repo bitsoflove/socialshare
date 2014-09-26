@@ -18,6 +18,7 @@ BoL Social Share is yet another social share javascript library. It can share to
         > share.googleplus()
 
 ###Options
+```json
 {
     facebook: {
         appId: '__YOUR_APP_ID',
@@ -26,7 +27,7 @@ BoL Social Share is yet another social share javascript library. It can share to
     bitly: {
         token: '__YOUR_BITLY_TOKEN__'
     }
-}
+}```
 
 
 ###Facebook
