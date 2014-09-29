@@ -2,6 +2,7 @@ var bol = bol || {};
 
 bol.socialShare = (function(options) {
 
+
     var fbImage;
     var fbTitle;
     var fbSiteName;
@@ -15,6 +16,9 @@ bol.socialShare = (function(options) {
 
     initialize();
 
+
+    var googlePlusScriptLoaded = false;
+
     function initialize() {
         if (checkOptionsProvided()) {
             initializeFacebook();
@@ -24,7 +28,7 @@ bol.socialShare = (function(options) {
     }
 
     function initializeGooglePlus() {
-
+        injectGooglePlusScript(onGooglePlusScriptLoaded);
     }
 
     function initializeTwitter() {
@@ -54,7 +58,7 @@ bol.socialShare = (function(options) {
 
             url += qs;
 
-            var html = '<iframe src="//www.facebook.com/plugins/like.php?href=' + encodeURI(url) + '" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:' + width + '; height:' + height + ';" allowTransparency="true"></iframe>';
+            var html = '<iframe src="//www.facebook.com/plugins/like.php?href=' + encodeURI(url) + '" scrolling="no" frameborder="0" style="border:none; overflow:hidden" allowTransparency="true"></iframe>';
 
             $(this).replaceWith($(html));
         });
@@ -157,37 +161,94 @@ bol.socialShare = (function(options) {
 
     }
 
-    function postToLinkedIn() {
-
+    function postToLinkedIn(options) {
+        var url = 'http://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(options.fbUrl) + '&title=' + options.name + '&summary=' + options.description + '&source=';
+        popupCenter(url, options.name, 600, 300);
     }
 
-    function postToGooglePlus() {
 
-    }
 
-    function injectTwitterScript() {
-        window.twttr = (function(d, s, id) {
-            var t, js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
+    /**
+     * Wait 50ms for google to initialize its library,
+     * then execute all logic that's waiting !
+     */
+    function onGooglePlusScriptLoaded() {
+
+        setTimeout(function() {
+
+            googlePlusScriptLoaded = true;
+
+            for (var i = googlePlusQueue.length - 1; i >= 0; i--) {
+                var item = googlePlusQueue[i];
+
+                //Function.call(item[0], item[1]);
+                var theFunction = item[0];
+                theFunction(item[1]);
             }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = 'https://platform.twitter.com/widgets.js';
-            fjs.parentNode.insertBefore(js, fjs);
-            return window.twttr || (t = {
-                _e: [],
-                ready: function(f) {
-                    t._e.push(f);
-                }
+        }, 50);
+    }
+
+    var googlePlusQueue = [];
+
+    function initGooglePlusButtons($btns) {
+
+        if (googlePlusScriptLoaded) {
+            $btns.each(function() {
+
+                var $this = $(this);
+
+                var elId = $(this).attr('id');
+
+                var _options = {
+                    contenturl: 'https://plus.google.com/pages/',
+                    contentdeeplinkid: '/pages',
+                    prefilltext: 'Create your Google+ Page too!',
+                    calltoactionlabel: 'CREATE',
+                    calltoactionurl: 'http://plus.google.com/pages/create',
+                    calltoactiondeeplinkid: '/pages/create'
+                };
+
+                _options.clientid = options.googleplus.clientId;
+                _options.cookiepolicy = 'single_host_origin';
+
+
+
+                gapi.interactivepost.render(elId, _options);
             });
-        }(document, 'script', 'twitter-wjs'));
+        } else {
+            //put this function call in the queue.
+            //it will be exected when the google plus script has been loaded
+            googlePlusQueue.push([arguments.callee, $btns]);
+        }
+    }
+
+    function postToGooglePlus(elementId, _options) {
+
+        var $this = $('#' + elementId);
+
+        var dummyBtnId = 'gpib-' + elementId;
+        $this.after('<button id="' + dummyBtnId + '" style="display:none">Dummy Google-Plus Interactive Button</button>');
+
+        //wait 200ms for the google library to do its magic, and trigger the click event on the button
+        setTimeout(function() {
+            $("#" + dummyBtnId).trigger('click');
+        }, 200);
+
+
+
+        _options.clientid = options.googleplus.clientId;
+        _options.cookiepolicy = 'single_host_origin';
+
+        // Call the render method when appropriate within your app to display
+        // the button.
+        gapi.interactivepost.render(dummyBtnId, _options);
+
     }
 
 
     function prepareFacebookOptions() {
         var fbOptions = (options && options.facebook) ? options.facebook : {};
-        fbOptions.language = fbOptions.language || 'en_US';
+        fbOptions.language = options.language || 'en_US';
         fbOptions.xfbml = fbOptions.xfbml || false;
         fbOptions.status = fbOptions.status || true;
         fbOptions.version = fbOptions.version || 'v2.1';
@@ -220,11 +281,58 @@ bol.socialShare = (function(options) {
         }(document, 'script', 'facebook-jssdk'));
     }
 
+    function injectGooglePlusScript(c) {
+        //1. inject the global page share script
+        window.___gcfg = {
+            lang: options.language || 'en-US'
+        };
+
+        (function() {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = '//apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0];
+
+            s.parentNode.insertBefore(po, s);
+
+            if (c) {
+                s.addEventListener('load', function(e) {
+                    setTimeout(function() {
+                        c(null, e);
+                    }, 50);
+
+                }, false);
+            }
+        })();
+    }
+
+    function injectTwitterScript() {
+        window.twttr = (function(d, s, id) {
+            var t, js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = '//platform.twitter.com/widgets.js';
+            fjs.parentNode.insertBefore(js, fjs);
+            return window.twttr || (t = {
+                _e: [],
+                ready: function(f) {
+                    t._e.push(f);
+                }
+            });
+        }(document, 'script', 'twitter-wjs'));
+    }
+
     return {
         facebook: postToFacebook,
         twitter: postToTwitter,
         linkedin: postToLinkedIn,
-        googleplus: postToGooglePlus
+        googleplus: postToGooglePlus,
+
+        initGooglePlusButtons: initGooglePlusButtons
     };
 
 
