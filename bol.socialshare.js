@@ -2,6 +2,8 @@ var bol = bol || {};
 
 bol.socialShare = (function(options) {
 
+    var googlePlusQueue = [];
+
 
     var fbImage;
     var fbTitle;
@@ -181,44 +183,26 @@ bol.socialShare = (function(options) {
             for (var i = googlePlusQueue.length - 1; i >= 0; i--) {
                 var item = googlePlusQueue[i];
 
-                //Function.call(item[0], item[1]);
                 var theFunction = item[0];
-                theFunction(item[1]);
+                theFunction(item[1], item[2]);
             }
         }, 50);
     }
 
-    var googlePlusQueue = [];
 
-    function initGooglePlusButtons($btns) {
+
+    function initGooglePlusButton($btn, _options) {
 
         if (googlePlusScriptLoaded) {
-            $btns.each(function() {
+            var elId = $btn.attr('id');
 
-                var $this = $(this);
-
-                var elId = $(this).attr('id');
-
-                var _options = {
-                    contenturl: 'https://plus.google.com/pages/',
-                    contentdeeplinkid: '/pages',
-                    prefilltext: 'Create your Google+ Page too!',
-                    calltoactionlabel: 'CREATE',
-                    calltoactionurl: 'http://plus.google.com/pages/create',
-                    calltoactiondeeplinkid: '/pages/create'
-                };
-
-                _options.clientid = options.googleplus.clientId;
-                _options.cookiepolicy = 'single_host_origin';
-
-
-
-                gapi.interactivepost.render(elId, _options);
-            });
+            _options.clientid = options.googleplus.clientId;
+            _options.cookiepolicy = 'single_host_origin';
+            gapi.interactivepost.render(elId, _options);
         } else {
             //put this function call in the queue.
             //it will be exected when the google plus script has been loaded
-            googlePlusQueue.push([arguments.callee, $btns]);
+            googlePlusQueue.push([arguments.callee, $btn, _options]);
         }
     }
 
@@ -332,7 +316,7 @@ bol.socialShare = (function(options) {
         linkedin: postToLinkedIn,
         googleplus: postToGooglePlus,
 
-        initGooglePlusButtons: initGooglePlusButtons
+        initGooglePlusButton: initGooglePlusButton
     };
 
 
