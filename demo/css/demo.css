@@ -1,6 +1,5 @@
-.share-linkedin, .share-google-plus {
-    display: none;
-}
+
+
 
 .col-xs-3 img {
     width: 100%;
@@ -10,11 +9,9 @@
 
 .page-like {
     margin-top: 20px;
-    margin-left: 115px;
 }
 
-
-
-ul.share li {
-    /*float: left;*/
+/*global page shares are done through iframes*/
+.page-like iframe {
+    height: 20px;
 }

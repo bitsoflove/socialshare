@@ -22,7 +22,10 @@ bol.main = (function() {
         $('.share-facebook').on('click', shareFacebook);
         $('.share-twitter').on('click', shareTwitter);
         $('.share-linkedin').on('click', shareLinkedin);
-        $('.share-google-plus').on('click', shareGooglePlus);
+        //$('.share-google-plus').on('click', shareGooglePlus);
+
+        var $googlePlusButtons = $('.share-google-plus');
+        share.initGooglePlusButtons($googlePlusButtons);
     }
 
     function shareFacebook(event) {
@@ -51,7 +54,7 @@ bol.main = (function() {
         var $container = $(this).closest('div');
 
         var shareObject = {
-            description: $container.find('h2').text().trim(),
+            description: $container.find('h2').text().trim() + ': ' + $container.find('p').text(),
             hashtag: '#bitsoflove',
             url: 'http://bitsoflove.be'
         };
@@ -60,12 +63,31 @@ bol.main = (function() {
 
     function shareLinkedin(event) {
         event.preventDefault();
-        share.linkedin();
+        var $container = $(this).closest('div');
+
+        var shareObject = {
+            name: $container.find('h2').text(),
+            url: 'http://bitsoflove.be',
+            description: $container.find('p').text()
+        };
+        share.linkedin(shareObject);
     }
 
     function shareGooglePlus(event) {
         event.preventDefault();
-        share.googleplus();
+
+        var elId = $(this).attr('id');
+
+        var options = {
+            contenturl: 'https://plus.google.com/pages/',
+            contentdeeplinkid: '/pages',
+            prefilltext: 'Create your Google+ Page too!',
+            calltoactionlabel: 'CREATE',
+            calltoactionurl: 'http://plus.google.com/pages/create',
+            calltoactiondeeplinkid: '/pages/create'
+        };
+
+        share.googleplus(elId, options);
     }
 
     function getConfig(callback) {

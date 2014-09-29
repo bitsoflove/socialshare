@@ -1,8 +1,12 @@
 {
+    "language": "en_US",
     "facebook": {
         "appId": "772740719449905",
-        "language": "en_US",
         "xfbml": false,
         "status": true
+    },
+    "googleplus": {
+        "clientId": "562607671653-th6jbbfopr2hnpfpfarpqv83f6g4luq8.apps.googleusercontent.com",
+        "cta": "VISIT"
     }
 }
