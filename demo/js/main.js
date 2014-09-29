@@ -25,7 +25,18 @@ bol.main = (function() {
         //$('.share-google-plus').on('click', shareGooglePlus);
 
         var $googlePlusButtons = $('.share-google-plus');
-        share.initGooglePlusButtons($googlePlusButtons);
+        $googlePlusButtons.each(function() {
+            var $this = $(this);
+            var options = {
+                contenturl: 'http://bitsoflove.be',
+                contentdeeplinkid: '/vis',
+                prefilltext: 'Create your own data visualizations with this tool!',
+                calltoactionlabel: 'CREATE',
+                calltoactionurl: 'http://bitsoflove.be',
+                calltoactiondeeplinkid: '/vis/create'
+            };
+            share.initGooglePlusButton($this, options);
+        });
     }
 
     function shareFacebook(event) {
@@ -73,22 +84,6 @@ bol.main = (function() {
         share.linkedin(shareObject);
     }
 
-    function shareGooglePlus(event) {
-        event.preventDefault();
-
-        var elId = $(this).attr('id');
-
-        var options = {
-            contenturl: 'https://plus.google.com/pages/',
-            contentdeeplinkid: '/pages',
-            prefilltext: 'Create your Google+ Page too!',
-            calltoactionlabel: 'CREATE',
-            calltoactionurl: 'http://plus.google.com/pages/create',
-            calltoactiondeeplinkid: '/pages/create'
-        };
-
-        share.googleplus(elId, options);
-    }
 
     function getConfig(callback) {
         $.getJSON('socialshare-config.json', callback);
