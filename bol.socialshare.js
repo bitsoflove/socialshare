@@ -110,8 +110,8 @@ bol.socialShare = (function(options) {
     function prepareFacebookOptions(_options) {
         var facebookOptions = {
             name: _options.title,
-            caption: _options.description,
-            description: _options.prefill,
+            caption: _options.prefill,
+            description: _options.description,
             url: _options.url,
             img: _options.img,
         };
