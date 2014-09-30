@@ -1,7 +1,8 @@
 {
     "language": "en_US",
     "facebook": {
-        "appId": "772740719449905",
+        "appId": "536725643140300",
+        "appId_localhost": "772740719449905",
         "xfbml": false,
         "status": true
     },

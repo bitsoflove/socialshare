@@ -3,21 +3,8 @@ var bol = bol || {};
 bol.socialShare = (function(options) {
 
     var googlePlusQueue = [];
-
-
-    var fbImage;
-    var fbTitle;
-    var fbSiteName;
-    var fbUrl;
-    var fbDescription;
-    var fbCaption;
-    var hashtags;
-
-    var url;
-    var _self;
-
+    var initializedLibraries = {};
     initialize();
-
 
     var googlePlusScriptLoaded = false;
 
@@ -26,21 +13,226 @@ bol.socialShare = (function(options) {
             initializeFacebook();
             initializeTwitter();
             initializeGooglePlus();
+
+            autoInitializeButtons();
         }
     }
 
+    function autoInitializeButtons() {
+        $('.ss-buttons').each(function() {
+            var $container = $(this);
+            var contentId = $container.attr('ss-container-id');
+            var $contentContainer = $('#' + contentId);
+            var contentVariables = getContentVariables($contentContainer);
+            var $btns = $container.find('[ss-btn]');
+
+            $btns.each(function() {
+                var $btn = $(this);
+                var btnType = $btn.attr('ss-btn');
+                var options = contentVariables[btnType];
+                initializeShareButton($btn, btnType, options);
+            });
+        });
+    }
+
+    function getContentVariables($container) {
+        if ($container.length) {
+
+            //grab the default values, set as ss- attributes on the $container
+            var defaults = getDefaultValues($container);
+
+            //grab the specific values, set as ss-classes on the $container's children
+            var specifics = getSpecificValues($container);
+
+            //merge defaults with specifics.
+            var options = mergeDefaultsWithSpecifics(defaults, specifics);
+
+            //prepare object for all networks
+            var preparedOptions = prepareOptionsForAllNetworks(options);
+
+            return preparedOptions;
+
+        } else {
+            console.error('No valid ss-container-id provided')
+        }
+    }
+
+    function prepareOptionsForAllNetworks(_options) {
+
+
+        //first do some pre-processing
+        if (_options.url == '[current]') {
+            _options.url = window.location.href;
+        }
+
+
+        var facebook = prepareFacebookOptions(_options);
+        var twitter = prepareTwitterOptions(_options);
+        var linkedin = prepareLinkedInOptions(_options);
+        var googleplus = prepareGooglePlusOptions(_options);
+
+        return {
+            facebook: facebook,
+            twitter: twitter,
+            linkedin: linkedin,
+            googleplus: googleplus
+        };
+    }
+
+    function prepareLinkedInOptions(_options) {
+        return {
+            name: _options.title,
+            url: _options.url,
+            description: _options.description
+        };
+    }
+
+    function prepareGooglePlusOptions(_options) {
+        return {
+            contenturl: _options.url,
+            //contentdeeplinkid: '/vis',
+            prefilltext: _options.prefill,
+            calltoactionlabel: _options['cta-btn'],
+            calltoactionurl: _options['cta-url'] || _options.url,
+            //calltoactiondeeplinkid: '/vis/create'
+        };
+    }
+
+
+    function prepareTwitterOptions(_options) {
+        return {
+            description: _options.prefill,
+            hashtag: '#' + _options.hashtag,
+            url: _options.url
+        };
+    }
+
+    function prepareFacebookOptions(_options) {
+        var facebookOptions = {
+            name: _options.title,
+            caption: _options.description,
+            description: _options.prefill,
+            url: _options.url,
+            img: _options.img,
+        };
+
+        //only add the actions property when both cta-name and cta-url have been provided
+        if (_options['cta-name'] && _options['cta-url']) {
+            facebookOptions.actions = [{
+                name: _options['cta-name'],
+                link: _options['cta-url']
+            }];
+        }
+
+        return facebookOptions;
+    }
+
+    function mergeDefaultsWithSpecifics(defaults, specifics) {
+        //clone the defaults object
+        var options = jQuery.extend(true, {}, defaults);
+
+        for (var key in specifics) {
+            options[key] = specifics[key];
+        }
+
+        return options;
+    }
+
+
+    //grab all the values of elements with a class starting with ss-
+    //trigger a warning whenever there's multiple elements with the same class
+    function getSpecificValues($container) {
+        var specificValues = {};
+        var $specifics = $container.find('[class^=ss-]');
+
+        $specifics.each(function() {
+            var $specific = $(this);
+            var classes = $specific.attr('class').split(' ');
+            for (var i = classes.length - 1; i >= 0; i--) {
+                var theClass = classes[i];
+
+                if (theClass.indexOf('ss-') === 0) {
+                    var key = theClass.substr(3); //remove the ss- prefix
+
+                    if (specificValues[key]) {
+                        console.warn('' + theClass + ' has been defined more than once in the same container');
+                    }
+
+                    specificValues[key] = $specific.text().trim();
+                }
+            }
+        });
+
+        return specificValues;
+    }
+
+    //grab all the attributes on $container starting with ss-
+    function getDefaultValues($container) {
+        var defaultValues = {};
+        var item = $container[0];
+
+        for (var attributeKey in item.attributes) {
+            var attribute = item.attributes[attributeKey];
+            if (attribute.nodeName && attribute.nodeName.indexOf('ss-') === 0) {
+                var key = attribute.nodeName.substr(3); //remove the ss- prefix
+                var value = attribute.nodeValue;
+                defaultValues[key] = value;
+            }
+        }
+
+        return defaultValues;
+    }
+
+    function initializeShareButton($btn, type, _options, callback) {
+
+        //google plus is a special case: we create an interactive post
+        if (type === 'googleplus') {
+            initGooglePlusButton($btn, _options);
+        }
+
+        //for all others, we add a click listener to the button
+        $btn.on('click', function(event) {
+            event.preventDefault();
+
+            if (type === 'facebook') {
+                postToFacebook(_options, function(response) {
+                    if (typeof(callback) === 'function') {
+                        callback(type, response, _options, $btn);
+                    }
+                });
+            }
+
+
+            if (type === 'twitter') {
+                postToTwitter(_options);
+            }
+        });
+    }
+
     function initializeGooglePlus() {
-        injectGooglePlusScript(onGooglePlusScriptLoaded);
+        if (typeof(initializedLibraries.googleplus) === 'undefined') {
+            initializedLibraries.googleplus = false;
+            injectGooglePlusScript(onGooglePlusScriptLoaded);
+        }
+
     }
 
     function initializeTwitter() {
-        injectTwitterScript();
+
+        if (typeof(initializedLibraries.twitter) === 'undefined') {
+            initializedLibraries.twitter = false;
+            injectTwitterScript(onTwitterScriptLoaded);
+        }
     }
 
     function initializeFacebook() {
-        prepareFacebookOptions();
-        injectFacebookScript();
-        initializeNativeFacebookLikeButtons();
+        if (typeof(initializedLibraries.facebook) === 'undefined') {
+            initializedLibraries.facebook = false;
+
+            prepareFacebookOptionsOld();
+            injectFacebookScript();
+            initializeNativeFacebookLikeButtons();
+        }
     }
 
     function initializeNativeFacebookLikeButtons() {
@@ -179,6 +371,7 @@ bol.socialShare = (function(options) {
         setTimeout(function() {
 
             googlePlusScriptLoaded = true;
+            initializedLibraries.googleplus = true;
 
             for (var i = googlePlusQueue.length - 1; i >= 0; i--) {
                 var item = googlePlusQueue[i];
@@ -187,6 +380,10 @@ bol.socialShare = (function(options) {
                 theFunction(item[1], item[2]);
             }
         }, 50);
+    }
+
+    function onTwitterScriptLoaded() {
+        initializedLibraries.twitter = true;
     }
 
 
@@ -230,7 +427,7 @@ bol.socialShare = (function(options) {
     }
 
 
-    function prepareFacebookOptions() {
+    function prepareFacebookOptionsOld() {
         var fbOptions = (options && options.facebook) ? options.facebook : {};
         fbOptions.language = options.language || 'en_US';
         fbOptions.xfbml = fbOptions.xfbml || false;
@@ -251,6 +448,7 @@ bol.socialShare = (function(options) {
 
         window.fbAsyncInit = function() {
             FB.init(fbOptions);
+            initializedLibraries.facebook = true;
         };
 
         (function(d, s, id) {
@@ -291,7 +489,7 @@ bol.socialShare = (function(options) {
         })();
     }
 
-    function injectTwitterScript() {
+    function injectTwitterScript(c) {
         window.twttr = (function(d, s, id) {
             var t, js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -301,6 +499,17 @@ bol.socialShare = (function(options) {
             js.id = id;
             js.src = '//platform.twitter.com/widgets.js';
             fjs.parentNode.insertBefore(js, fjs);
+
+
+            if (c) {
+                fjs.addEventListener('load', function(e) {
+                    setTimeout(function() {
+                        c(null, e);
+                    }, 50);
+
+                }, false);
+            }
+
             return window.twttr || (t = {
                 _e: [],
                 ready: function(f) {
