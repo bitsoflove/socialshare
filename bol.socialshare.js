@@ -53,7 +53,7 @@ bol.socialShare = (function(options) {
             return preparedOptions;
 
         } else {
-            console.error('No valid ss-container-id provided')
+            consoleError('No valid ss-container-id provided')
         }
     }
 
@@ -155,7 +155,7 @@ bol.socialShare = (function(options) {
                     var key = theClass.substr(3); //remove the ss- prefix
 
                     if (specificValues[key]) {
-                        console.warn('' + theClass + ' has been defined more than once in the same container');
+                        consoleWarning('' + theClass + ' has been defined more than once in the same container');
                     }
 
                     specificValues[key] = $specific.text().trim();
@@ -269,19 +269,19 @@ bol.socialShare = (function(options) {
     }
 
     function consoleLog(log, arg) {
-        if (console && console.log) {
+        if (console && console.log && options.debug) {
             console.log('socialShare: ' + log, arg);
         }
     }
 
     function consoleWarning(warn, arg) {
-        if (console && console.warn) {
+        if (console && console.warn && options.debug) {
             console.warn('socialShare: ' + warn, arg);
         }
     }
 
     function consoleError(error, arg) {
-        if (console && console.error) {
+        if (console && console.error && options.debug) {
             console.error('socialShare: ' + error, arg);
         }
     }
@@ -434,7 +434,7 @@ bol.socialShare = (function(options) {
         fbOptions.version = fbOptions.version || 'v2.1';
 
         if (!fbOptions.appId) {
-            console.error('No facebook appId provided');
+            consoleError('No facebook appId provided');
             return;
         }
     }

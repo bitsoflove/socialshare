@@ -1,6 +1,6 @@
 {
     "name": "bitsoflove-socialshare",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "authors": [
         "Pepijn Olivier <pepijn@bitsoflove.be>"
     ],
@@ -16,7 +16,11 @@
         "share",
         "linkedin",
         "google",
-        "plus"
+        "plus",
+        "bits",
+        "of",
+        "love",
+        "bitsoflove"
     ],
     "license": "MIT",
     "homepage": "http://bitsoflove.be",
