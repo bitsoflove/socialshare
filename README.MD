@@ -1,4 +1,4 @@
-todo: register on bower
+[Demo](code.bitsoflove.be/socialshare/)
 
 
 
