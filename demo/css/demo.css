@@ -1,4 +1,8 @@
-
+#main-img {
+    width: 30%;
+    margin: 0 auto;
+    display: block;
+}
 
 
 .col-xs-3 img {
