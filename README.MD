@@ -76,7 +76,7 @@ Be sure to add a **ss-buttons** class to the element containing your actual shar
 
 
 ```javascript
-var share = new bol.share({
+var share = new bol.socialShare({
     facebook: {
         appId: '__YOUR_FACEBOOK_APP_ID',
         xfbml: false,
