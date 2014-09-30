@@ -24,11 +24,11 @@ bol.socialShare = (function(options) {
             var contentId = $container.attr('ss-container-id');
             var $contentContainer = $('#' + contentId);
             var contentVariables = getContentVariables($contentContainer);
-            var $btns = $container.find('[ss-btn]');
+            var $btns = $container.find('[ss-button]');
 
             $btns.each(function() {
                 var $btn = $(this);
-                var btnType = $btn.attr('ss-btn');
+                var btnType = $btn.attr('ss-button');
                 var options = contentVariables[btnType];
                 initializeShareButton($btn, btnType, options);
             });

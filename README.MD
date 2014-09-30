@@ -66,10 +66,10 @@ Be sure to add a **ss-buttons** class to the element containing your actual shar
 
 
 <ul class="ss-buttons" ss-container-id="newsitem1" >
-    <li><a class="ss-facebook" href="#">Share on Facebook</a></li>
-    <li><a class="ss-twitter" href="#">Share on Twitter</a></li>
-    <li><a class="ss-linkedin" href="#">Share on LinkedIn</a></li>
-    <li><a class="ss-googleplus" href="#">Share on Google Plus</a></li>
+    <li><a ss-button="facebook" href="#">Share on Facebook</a></li>
+    <li><a ss-button="twitter" href="#">Share on Twitter</a></li>
+    <li><a ss-button="linkedin" href="#">Share on LinkedIn</a></li>
+    <li><a ss-button="googleplus" href="#">Share on Google Plus</a></li>
 </ul>
 
 ```
