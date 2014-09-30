@@ -1,5 +1,5 @@
 todo: register on bower
-todo: use og:tags as a first default! (when specified through options?)
+
 
 
 
@@ -19,15 +19,7 @@ BoL Social Share is yet another social share javascript library. It can share to
 - Supports default share buttons (without app ID) as well as custom share buttons
 
 
-###Dependencies
-
-    - jQuery 1.11
-
-
 ###Prerequisites
-#### Include the script at the **bottom** of your HTML, right before the closing body tag
-
-
 #### OG-tags
 When Facebook is one of the platforms you're going to support, you should always integrate OG-tags.
 This is because people sometimes copy-paste your link straight into facebook, rather than using the provided links. Handling OG-tags is **NOT** something BoL socialshare does for you.
@@ -44,23 +36,23 @@ All share options are set via attributes and classes.
 
 #####ss-attributes
 Global options are set as **ss-attributes** on the shareable element.
-In the example below, we have defined a default image, URL and hashtags. We advise to use attributes over classes (see later) whenever you want to define social share content that's not 100% the same as your actual content. (Some things, like hashtags, are usually absent in the content anyway)
+In the example below, we have defined a default image, URL and hashtag. We advise to use attributes over classes (see later) whenever you want to define social share content that's not 100% the same as your actual content. (Some things, like hashtag, are usually absent in the content anyway)
 
 #####ss-classes
 If you would like to use the content of an element as a social share property (eg. title, description, img, url, ...), you can simply add the corresponding **ss-** class to that element. BoL SocialShare will then use this content for your social share
 
 **IMPORTANT**
 
-Be sure to add a **social-buttons** class to the element containing your actual share buttons. This element also needs a **ss-container-id** attribute, which points to the container element of the shareable content.
+Be sure to add a **ss-buttons** class to the element containing your actual share buttons. This element also needs a **ss-container-id** attribute, which points to the container element of the shareable content.
 
 
 
 **Example:**
 ```html
 <div id="news-item-1"
-     ss-img="http://familyhw.com/wp-content/uploads/2012/12/SocialMedia-FEATURED.jpg"
-     ss-url="http://bitsoflove.be/news/social-share-graphs"
-     ss-hashtags="socialshare"
+     ss-img="http://code.bitsoflove.be/socialshare/demo/img/social1.jpg"
+     ss-url="http://code.bitsoflove.be/socialshare/"
+     ss-hashtag="socialshare"
  >
 
     <h1 class="ss-title">
@@ -73,7 +65,7 @@ Be sure to add a **social-buttons** class to the element containing your actual 
 </div>
 
 
-<ul class="social-buttons" ss-container-id="newsitem1" >
+<ul class="ss-buttons" ss-container-id="newsitem1" >
     <li><a class="ss-facebook" href="#">Share on Facebook</a></li>
     <li><a class="ss-twitter" href="#">Share on Twitter</a></li>
     <li><a class="ss-linkedin" href="#">Share on LinkedIn</a></li>
@@ -104,10 +96,10 @@ var share = new bol.share({
 #####List of ss-attributes and classes.
 All of the below can be used as a class or as an attribute.
 
-- ss-hashtags
+- ss-hashtag
 - ss-image
 - ss-title
-- ss-url. Tip: use '[current]' to let BoL Socialshare fill this in automatically
+- ss-url
 - ss-cta-url
 - ss-cta-text
 - ss-cta-btn
@@ -121,8 +113,69 @@ All of the below can be used as a class or as an attribute.
 
 ####Advanced: Via Javascript
 
+If you want to specify all of the sharing options manually, we support that, too!
 
-TODO
+When using javascript, it is advised not to use the **ss-** classes and attributes at all.
+
+All you have to do is bind your clicklisteners to the social share library.
+Below is some example code to get you started
+```javascript
+
+
+var share = bol.socialShare(config);
+
+
+$('.share-facebook').on('click', shareFacebook);
+$('.share-twitter').on('click', shareTwitter);
+$('.share-linkedin').on('click', shareLinkedin);
+
+function shareFacebook(event) {
+        event.preventDefault();
+
+        var $container = $(this).closest('div');
+
+        var shareObject = {
+            name: $container.find('h2').text(),
+            caption: $container.find('p').text(),
+            description: $('#caption').text(),
+            url: 'http://bitsoflove.be/',
+            img: location.href + $container.find('img').attr('src'),
+            actions: [{
+                name: 'Learn more about DataViz!',
+                link: 'http://bitsoflove.be/dataviz'
+            }]
+        };
+
+        share.facebook(shareObject);
+    }
+
+    function shareTwitter(event) {
+        event.preventDefault();
+
+        var $container = $(this).closest('div');
+
+        var shareObject = {
+            description: $container.find('h2').text().trim() + ': ' + $container.find('p').text(),
+            hashtag: '#bitsoflove',
+            url: 'http://bitsoflove.be'
+        };
+        share.twitter(shareObject);
+    }
+
+    function shareLinkedin(event) {
+        event.preventDefault();
+        var $container = $(this).closest('div');
+
+        var shareObject = {
+            name: $container.find('h2').text(),
+            url: 'http://bitsoflove.be',
+            description: $container.find('p').text()
+        };
+        share.linkedin(shareObject);
+    }
+```
+
+
 
 
 <!--
