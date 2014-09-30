@@ -236,7 +236,7 @@ bol.socialShare = (function(options) {
 
     function initializeNativeFacebookLikeButtons() {
 
-        $('.btn-fb-like').each(function() {
+        $('.ss-fb-like').each(function() {
             var url = $(this).attr('data-url');
 
             var width = 100;
