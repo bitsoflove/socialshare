@@ -3,11 +3,113 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>BoL: Social share demo</title>
+
 </head>
 
+<head>
+
+    <!-- facebook APP ID -->
+    <!--<meta property="fb:app_id" content="772740719449905" />-->
+    <meta property="fb:app_id" content="536725643140300" />
+
+
+    <!-- facebook OG properties -->
+    <meta property="og:title" content="BoL SocialShare Demo: Facebook OG Title">
+    <meta property="og:site_name" content="Bits of Love SocialShare">
+    <meta property="og:image" content="img/og-image.jpg">
+    <meta property="og:url" content="http://socialshare.bitsoflove.be/demo">
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="article:author" content="https://www.facebook.com/usersixtyfive" />
+    <meta property="article:publisher" content="https://www.facebook.com/usersixtyfive" />
+    <meta property="og:description" content="This is the possibly long OG-description ... At least two sentences should be written down here! Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.">
+
+    <!-- site-global hashtag property -->
+    <meta name="hashtags" content="bfprogress">
+
+
+
+    <!-- loading font-awesome and bootstrap css -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="demo/css/demo.css">
+
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="bol.socialshare.js"></script>
+
+    <script src="demo/js/main.js"></script>
+
+</head>
+
+
+
 <body>
-    dummy index page
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+                <h1>BoL SocialShare Demo</h1>
+            </div>
+            <div class="col-xs-2 pull-right">
+                <div class="page-like">
+
+                    <!-- Facebook Share + Like: global page -->
+                    <div class="btn-fb-like" data-share="true" data-url="http://bitsoflove.be"></div>
+
+                    <!-- GooglePlus Share: global page -->
+                    <div class="g-plus" data-action="share" data-annotation="none" href="http://bitsoflove.be"></div>
+
+
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p id="caption" class="well">
+                    Bits of Love is a web agency with roots in data visualization.
+                </p>
+
+                <p id="description">
+                    Aside from the caption above, we can also provide this longer description text for use in Facebook. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit ipsum laboriosam repudiandae et error fugiat placeat animi praesentium cupiditate fugit tempora nisi, eum cum ducimus provident obcaecati eos amet delectus?
+                </p>
+            </div>
+
+
+
+            <div class="col-xs-3">
+                <div id="news-item-1" ss-img="http://familyhw.com/wp-content/uploads/2012/12/SocialMedia-FEATURED.jpg" ss-url="[current]" ss-hashtag="socialshare" ss-prefill="Bits of Love is an awesome team. Check out www.bitsoflove.be">
+                    <h1 class="ss-title">
+                        Data Visualization in Belgium
+                    </h1>
+                    <p class="ss-description">
+                        Belgium has come a long way concerning data visualizations. A startup company named Bits of Love has recently changed the scene.
+                    </p>
+                </div>
+
+                <ul class="ss-buttons" ss-container-id="news-item-1">
+                    <li><a ss-btn="facebook" href="#">Share on Facebook</a>
+                    </li>
+                    <li><a ss-btn="twitter" href="#">Share on Twitter</a>
+                    </li>
+                    <li><a ss-btn="linkedin" href="#">Share on LinkedIn</a>
+                    </li>
+                    <li><a ss-btn="googleplus" href="#">Share on Google Plus</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+
 </body>
 
 </html>
