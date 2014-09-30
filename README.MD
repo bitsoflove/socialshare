@@ -25,7 +25,7 @@ BoL Social Share is yet another social share javascript library. It can share to
 
 
 ###Prerequisites
-#### Include the script at the **bottom** of your HTML, right before the closing </body> tag
+#### Include the script at the **bottom** of your HTML, right before the closing body tag
 
 
 #### OG-tags
