@@ -188,25 +188,24 @@ bol.socialShare = (function(options) {
         //google plus is a special case: we create an interactive post
         if (type === 'googleplus') {
             initGooglePlusButton($btn, _options);
+        } else {
+            //for all others, we add a click listener to the button
+            $btn.on('click', function(event) {
+                event.preventDefault();
+
+                if (type === 'facebook') {
+                    postToFacebook(_options, function(response) {
+                        if (typeof(callback) === 'function') {
+                            callback(type, response, _options, $btn);
+                        }
+                    });
+                } else if (type === 'twitter') {
+                    postToTwitter(_options);
+                } else if (type === 'linkedin') {
+                    postToLinkedIn(options);
+                }
+            });
         }
-
-        //for all others, we add a click listener to the button
-        $btn.on('click', function(event) {
-            event.preventDefault();
-
-            if (type === 'facebook') {
-                postToFacebook(_options, function(response) {
-                    if (typeof(callback) === 'function') {
-                        callback(type, response, _options, $btn);
-                    }
-                });
-            }
-
-
-            if (type === 'twitter') {
-                postToTwitter(_options);
-            }
-        });
     }
 
     function initializeGooglePlus() {
@@ -356,7 +355,7 @@ bol.socialShare = (function(options) {
     }
 
     function postToLinkedIn(options) {
-        var url = 'http://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(options.fbUrl) + '&title=' + options.name + '&summary=' + options.description + '&source=';
+        var url = 'http://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(options.url) + '&title=' + options.name + '&summary=' + options.description + '&source=';
         popupCenter(url, options.name, 600, 300);
     }
 
