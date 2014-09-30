@@ -6,7 +6,7 @@ bol.main = (function() {
 
     function init() {
         //grab the config json file, and initialize the social share lib
-        $.getJSON('socialshare-config.json', function(config) {
+        $.getJSON('demo/socialshare-config.json', function(config) {
             share = bol.socialShare(config);
         });
 
