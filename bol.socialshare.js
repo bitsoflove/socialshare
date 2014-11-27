@@ -19,12 +19,21 @@ bol.socialShare = (function(options) {
     }
 
     function autoInitializeButtons() {
-        $('.ss-buttons').each(function() {
+        var $ssButtons = $('.ss-buttons');
+        if(!$ssButtons.length) {
+            console.warn('Could not find any ss-buttons.');
+        }
+        
+        $ssButtons.each(function() {
             var $container = $(this);
             var contentId = $container.attr('ss-container-id');
             var $contentContainer = $('#' + contentId);
             var contentVariables = getContentVariables($contentContainer);
             var $btns = $container.find('[ss-button]');
+            
+            if(!$btns.length) {
+                console.warn('Found ss-buttons group, but no ss-button inside!');
+            }
 
             $btns.each(function() {
                 var $btn = $(this);
