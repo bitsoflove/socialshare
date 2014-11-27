@@ -21,7 +21,7 @@ bol.socialShare = (function(options) {
     function autoInitializeButtons() {
         var $ssButtons = $('.ss-buttons');
         if(!$ssButtons.length) {
-            console.warn('Could not find any ss-buttons.');
+            consoleWarning('Could not find any ss-buttons.');
         }
         
         $ssButtons.each(function() {
@@ -32,7 +32,7 @@ bol.socialShare = (function(options) {
             var $btns = $container.find('[ss-button]');
             
             if(!$btns.length) {
-                console.warn('Found ss-buttons group, but no ss-button inside!');
+                consoleWarning('Found ss-buttons group, but no ss-button inside!');
             }
 
             $btns.each(function() {
