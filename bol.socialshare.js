@@ -111,7 +111,7 @@ bol.socialShare = (function(options) {
     function prepareTwitterOptions(_options) {
         return {
             description: _options.prefill,
-            hashtag: '#' + _options.hashtag,
+            hashtags: _options.hashtags,
             url: _options.url
         };
     }
@@ -305,7 +305,7 @@ bol.socialShare = (function(options) {
      */
     function postToTwitter(options) {
 
-        var twitterUrl = 'http://twitter.com/share?text=' + encodeURIComponent(options.description) + '&url=' + encodeURIComponent(options.url) + '&hashtags=' + options.hashtag;
+        var twitterUrl = 'http://twitter.com/share?text=' + encodeURIComponent(options.description) + '&url=' + encodeURIComponent(options.url) + '&hashtags=' + options.hashtags;
 
         popupCenter(twitterUrl, 'Twitter', 600, 300);
     }
@@ -441,6 +441,7 @@ bol.socialShare = (function(options) {
         fbOptions.xfbml = fbOptions.xfbml || false;
         fbOptions.status = fbOptions.status || true;
         fbOptions.version = fbOptions.version || 'v2.1';
+        fbOptions.review = fbOptions.review || false;
 
         if (!fbOptions.appId) {
             consoleError('No facebook appId provided');
