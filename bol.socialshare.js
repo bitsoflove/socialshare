@@ -20,18 +20,18 @@ bol.socialShare = (function(options) {
 
     function autoInitializeButtons() {
         var $ssButtons = $('.ss-buttons');
-        if(!$ssButtons.length) {
+        if (!$ssButtons.length) {
             consoleWarning('Could not find any ss-buttons.');
         }
-        
+
         $ssButtons.each(function() {
             var $container = $(this);
             var contentId = $container.attr('ss-container-id');
             var $contentContainer = $('#' + contentId);
             var contentVariables = getContentVariables($contentContainer);
             var $btns = $container.find('[ss-button]');
-            
-            if(!$btns.length) {
+
+            if (!$btns.length) {
                 consoleWarning('Found ss-buttons group, but no ss-button inside!');
             }
 
@@ -110,6 +110,7 @@ bol.socialShare = (function(options) {
 
     function prepareTwitterOptions(_options) {
         return {
+            method: _options.method,
             description: _options.prefill,
             hashtags: _options.hashtags,
             url: _options.url
@@ -304,7 +305,9 @@ bol.socialShare = (function(options) {
      *     url
      */
     function postToTwitter(options) {
-        var twitterUrl = 'http://twitter.com/share?';
+        options.method = options.method || 'share';
+
+        var twitterUrl = 'http://twitter.com/' + options.method + '?';
         var args = [];
 
         options.description && args.push('text=' + encodeURIComponent(options.description));
