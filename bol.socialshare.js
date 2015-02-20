@@ -304,8 +304,14 @@ bol.socialShare = (function(options) {
      *     url
      */
     function postToTwitter(options) {
+        var twitterUrl = 'http://twitter.com/share?';
+        var args = [];
 
-        var twitterUrl = 'http://twitter.com/share?text=' + encodeURIComponent(options.description) + '&url=' + encodeURIComponent(options.url) + '&hashtags=' + options.hashtags;
+        options.description && args.push('text=' + encodeURIComponent(options.description));
+        options.url && args.push('url=' + encodeURIComponent(options.url));
+        options.hashtags && args.push('hashtags=' + options.hashtags);
+
+        twitterUrl = twitterUrl + args.join('&');
 
         popupCenter(twitterUrl, 'Twitter', 600, 300);
     }
