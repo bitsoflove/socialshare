@@ -301,7 +301,7 @@ bol.socialShare = (function(options) {
     /**
      * options
      *     description
-     *     hashtag
+     *     hashtags
      *     url
      */
     function postToTwitter(options) {
