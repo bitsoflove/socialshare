@@ -212,7 +212,7 @@ bol.socialShare = (function(options) {
                 } else if (type === 'twitter') {
                     postToTwitter(_options);
                 } else if (type === 'linkedin') {
-                    postToLinkedIn(options);
+                    postToLinkedIn(_options);
                 }
             });
         }
