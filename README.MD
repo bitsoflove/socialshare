@@ -36,7 +36,7 @@ All share options are set via attributes and classes.
 
 #####ss-attributes
 Global options are set as **ss-attributes** on the shareable element.
-In the example below, we have defined a default image, URL and hashtag. We advise to use attributes over classes (see later) whenever you want to define social share content that's not 100% the same as your actual content. (Some things, like hashtag, are usually absent in the content anyway)
+In the example below, we have defined a default image, URL and hashtags. We advise to use attributes over classes (see later) whenever you want to define social share content that's not 100% the same as your actual content. (Some things, like hashtags, are usually absent in the content anyway)
 
 #####ss-classes
 If you would like to use the content of an element as a social share property (eg. title, description, img, url, ...), you can simply add the corresponding **ss-** class to that element. BoL SocialShare will then use this content for your social share
@@ -52,7 +52,7 @@ Be sure to add a **ss-buttons** class to the element containing your actual shar
 <div id="news-item-1"
      ss-img="http://code.bitsoflove.be/socialshare/demo/img/social1.jpg"
      ss-url="http://code.bitsoflove.be/socialshare/"
-     ss-hashtag="socialshare"
+     ss-hashtags="socialshare,anothertag"
  >
 
     <h1 class="ss-title">
@@ -96,7 +96,7 @@ var share = new bol.socialShare({
 #####List of ss-attributes and classes.
 All of the below can be used as a class or as an attribute.
 
-- ss-hashtag
+- ss-hashtags
 - ss-image
 - ss-title
 - ss-url
@@ -156,7 +156,7 @@ function shareFacebook(event) {
 
         var shareObject = {
             description: $container.find('h2').text().trim() + ': ' + $container.find('p').text(),
-            hashtag: '#bitsoflove',
+            hashtags: 'bitsoflove,anothertag',
             url: 'http://bitsoflove.be'
         };
         share.twitter(shareObject);
